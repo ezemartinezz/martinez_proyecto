@@ -1,16 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 from django.template import loader
-# Create your views here.
+from inicio.models import Producto
+from inicio.forms import Productoform
 
-from django.http import HttpResponse
  
 def inicio (request,):
     fecha_actual = datetime.now()
     datos = {'fecha_actual' : fecha_actual}
     return render(request, 'inicio.html', datos)
 
-def primer_template(request):
-    return HttpResponse('<h3> Inciio inical </h3>')
+def acerca(request):
+    return render(request, 'acerca.html')
 
+def agregar_producto_view(request):
+    if request.method == 'POST':
+        form = Productoform(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/ver_pedido')  
+    else:
+        form = Productoform()
+    return render(request, 'agregar_producto.html', {'form': form})
 
+def ver_pedido_view(request):
+    productos = Producto.objects.all()
+    
+    return render(request, 'ver_producto.html', {'productos': productos})
+    

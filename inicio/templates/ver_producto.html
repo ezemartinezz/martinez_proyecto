@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title_head %}
+Ver producto
+{% endblock title_head %}
+{% block h1_header %} 
+Ver producto
+{% endblock h1_header %}
+{% block main %}
+<h1>Lista de Productos</h1>
+<ul>
+    {% for producto in productos %}
+        <li> Nombre : {{ producto.nombre }} </li>
+        <li> Categoria : {{ producto.categoria }} </li>
+        <li> Descripcion : {{ producto.descripcion }}</li>
+        <br>
+    {% empty %}
+        <li>No hay productos disponibles.</li>
+    {% endfor %}
+</ul>
+{% endblock main %}

@@ -1,0 +1,16 @@
+
+{% extends "base.html" %}
+{% block title_head %}
+Cargar producto
+{% endblock title_head %}
+{% block h1_header %} 
+Productos
+{% endblock h1_header %}
+{% block main %}
+ 
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar</button>
+</form>
+{% endblock main %}
