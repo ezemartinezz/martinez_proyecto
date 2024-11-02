@@ -6,15 +6,39 @@ Ver producto
 Ver producto
 {% endblock h1_header %}
 {% block main %}
+
 <h1>Lista de Productos</h1>
 <ul>
     {% for producto in productos %}
-        <li> Nombre : {{ producto.nombre }} </li>
-        <li> Categoria : {{ producto.categoria }} </li>
-        <li> Descripcion : {{ producto.descripcion }}</li>
+        <li>Nombre: {{ producto.nombre }}</li>
+        <li>Categoría: {{ producto.categoria }}</li>
+        <li>Descripción: 
+            {% if producto.descripcion|length > 20 %}
+                {{ producto.descripcion|truncatechars:20 }}
+                <span id="descripcion-completa-{{ producto.id }}" style="display: none;">
+                    {{ producto.descripcion|slice:"20:" }}
+                </span>
+                <a href="#" onclick="mostrarDescripcionCompleta({{ producto.id }}); return false;">Ver más</a>
+            {% else %}
+                {{ producto.descripcion }}
+            {% endif %}
+        </li>
         <br>
     {% empty %}
         <li>No hay productos disponibles.</li>
     {% endfor %}
 </ul>
+
+{% comment %} <a href="{% url 'eliminar_producto' %}">Eliminar</a> {% endcomment %}
+
+<script>
+function mostrarDescripcionCompleta(id) {
+    var descripcionCompleta = document.getElementById('descripcion-completa-' + id);
+    descripcionCompleta.style.display = 'inline';
+}
+</script>
+
 {% endblock main %}
+
+
+
