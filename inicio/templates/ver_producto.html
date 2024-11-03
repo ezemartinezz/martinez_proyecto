@@ -13,23 +13,34 @@ Ver producto
         <li>Nombre: {{ producto.nombre }}</li>
         <li>Categoría: {{ producto.categoria }}</li>
         <li>Descripción: 
-            {% if producto.descripcion|length > 20 %}
-                {{ producto.descripcion|truncatechars:20 }}
+            {% if producto.descripcion|length > 90 %}
+                {{ producto.descripcion|truncatechars:90 }}
                 <span id="descripcion-completa-{{ producto.id }}" style="display: none;">
                     {{ producto.descripcion|slice:"20:" }}
                 </span>
-                <a href="#" onclick="mostrarDescripcionCompleta({{ producto.id }}); return false;">Ver más</a>
+                <a href="#"  onclick="mostrarDescripcionCompleta({{ producto.id }}); this.style.display='none'; return false;">Ver más</a>
             {% else %}
                 {{ producto.descripcion }}
             {% endif %}
         </li>
+        {% comment %} <li>Foto: {{ producto.imagen }}</li> {% endcomment %}
+        <li>Foto: 
+         {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="Imagen de {{ producto.nombre }}" height="100px">
+            {% else %}
+                <p>No hay imagen disponible.</p>
+            {% endif %} 
+        </li>
+        <a href="{% url 'eliminar_producto' producto.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+        <br>
+        <br>
+        <br>
         <br>
     {% empty %}
         <li>No hay productos disponibles.</li>
     {% endfor %}
 </ul>
 
-{% comment %} <a href="{% url 'eliminar_producto' %}">Eliminar</a> {% endcomment %}
 
 <script>
 function mostrarDescripcionCompleta(id) {

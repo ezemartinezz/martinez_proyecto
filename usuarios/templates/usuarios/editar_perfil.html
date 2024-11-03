@@ -10,12 +10,50 @@ Editar perfil
 <form action =  {% url "usuarios:editar_perfil" %} method='post' enctype= 'multipart/form-data'>
     {% csrf_token %}
     
-    {{form}}
+    <div>
+        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+        {{ form.first_name }}  <!-- Muestra el campo del nombre -->
+        {% if form.first_name.errors %}
+            <div class="error">{{ form.first_name.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    <div>
+        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+        {{ form.last_name }}  <!-- Muestra el campo del apellido -->
+        {% if form.last_name.errors %}
+            <div class="error">{{ form.last_name.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+
+    <div>
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}  <!-- Muestra el campo del email -->
+        {% if form.email.errors %}
+            <div class="error">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+
+    <div>
+        <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
+        {{ form.avatar }}  <!-- Muestra el campo del avatar -->
+        {% if form.avatar.errors %}
+            <div class="error">{{ form.avatar.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    {% if form.avatar.errors %}
+    <p>Img: <img src="{{ datos_extra.avatar.url }}" alt="Avatar de {{ datos_extra.user.username }}" height="100px"></p>
+    {% endif %}
+    <br>
+    <br>
+
     <input type="submit" value="Editar">
 
+    <p>
+        <a href = {% url "usuarios:cambiar_contraseña" %}> Cambiar contraseña</a>
+    </p>
 </form>
-</p>
-<p>
-    <a href = {% url "usuarios:cambiar_contraseña" %}> Cambiar contraseña</a>
-</p>
 {% endblock main %}

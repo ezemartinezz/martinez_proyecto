@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title_head %}
+Ver Usuario
+{% endblock title_head %}
+
+{% block h1_header %} Perfil de {{ user.username }}{% endblock h1_header %} 
+
+{% block main %}
+<h2>Información del Usuario</h2>
+
+<div>
+    <strong>Nombre:</strong> {{ user.first_name }}<br>
+    <strong>Apellido:</strong> {{ user.last_name }}<br>
+    <strong>Email:</strong> {{ user.email }}<br>
+</div>
+
+<h2>Foto de Perfil</h2>
+{% if datos_extra.avatar %}
+    <img src="{{ datos_extra.avatar.url }}" alt="Avatar de {{ datos_extra.user.username }}" height="100px">
+{% else %}
+    <p>No hay foto de perfil disponible.</p>
+{% endif %}
+
+<p>
+    <a href="{% url 'usuarios:editar_perfil' %}"> Editar perfil</a>
+</p>
+{% endblock main %}

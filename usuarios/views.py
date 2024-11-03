@@ -45,25 +45,33 @@ def registrarse(request):
     return render(request, 'usuarios/registrarse.html', {'form': formulario})
 
 
+def ver_usuario(request):
+    datos_extra = request.user.datosextra
+    return render(request, 'usuarios/ver_usuario.html', {'user': request.user, 'datos_extra': datos_extra})
+
 def editar_perfil(request):
-    datos_extra= request.user.datosextra
-    formulario = FormularioEdicionPerfil(instance= request.user, initial={'avatar': datos_extra.avatar})
-    
-    if request.method =='POST':
-        formulario= FormularioEdicionPerfil(request.POST, request.FILES, instance= request.user)
+    datos_extra = request.user.datosextra
+    formulario = FormularioEdicionPerfil(instance=request.user)
+
+    if request.method == 'POST':
+        formulario = FormularioEdicionPerfil(request.POST, request.FILES, instance=request.user)
         
         if formulario.is_valid():
-            
-            new_avatar= formulario.cleaned_data.get('avatar')
-            datos_extra.avatar = new_avatar if new_avatar else datos_extra.avatar
-            datos_extra.save()
             formulario.save()
             
+            new_avatar = request.FILES.get('avatar')
+            if new_avatar:
+                datos_extra.avatar = new_avatar
             
+            datos_extra.save()
+
             return redirect('inicio')  
                
-    return render(request, 'usuarios/editar_perfil.html', {'form': formulario})
+    return render(request, 'usuarios/editar_perfil.html', {'form': formulario, 'datos_extra': datos_extra})
+
 
 class CambiarContraseña(LoginRequiredMixin,PasswordChangeView):
     template_name = 'usuarios/cambiar_contraseña.html'
     success_url = reverse_lazy('usuarios:editar_perfil')
+    
+    
