@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title_head %}
+Editar producto
+{% endblock title_head %}
+
+{% block h1_header %} Editar producto {{producto.nombre}}{% endblock h1_header %} 
+
+{% block main %}
+<p>
+    <form action="{% url 'editar_producto' producto.id %}" method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        
+        <div>
+            <label for="{{ form.nombre.id_for_label }}">Nombre:</label>
+            {{ form.nombre }}  
+            {% if form.nombre.errors %}
+                <div class="error">{{ form.nombre.errors }}</div>
+            {% endif %}
+        </div>
+    
+        <div>
+            <label for="{{ form.categoria.id_for_label }}">Categoría:</label>
+            {{ form.categoria }}  
+            {% if form.categoria.errors %}
+                <div class="error">{{ form.categoria.errors }}</div>
+            {% endif %}
+        </div>
+    
+        <div>
+            <label for="{{ form.descripcion.id_for_label }}">Descripción:</label>
+            {{ form.descripcion }}  
+            {% if form.descripcion.errors %}
+                <div class="error">{{ form.descripcion.errors }}</div>
+            {% endif %}
+        </div>
+    
+        <div>
+            <label for="{{ form.imagen.id_for_label }}">Imagen:</label>
+            {{ form.imagen }}  
+            {% if form.imagen.errors %}
+                <div class="error">{{ form.imagen.errors }}</div>
+            {% endif %}
+        </div>
+    
+        <input type="submit" value="Editar">
+    </form>
+{% endblock main %}

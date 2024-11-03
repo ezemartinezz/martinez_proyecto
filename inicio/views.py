@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from datetime import datetime
 from django.template import loader
 from inicio.models import Producto
-from inicio.forms import Productoform
+from inicio.forms import Productoform,FormularioEdicionProducto
 from django.contrib.auth.decorators import login_required
 
 def inicio (request,):
@@ -33,10 +33,23 @@ def ver_pedido_view(request):
     productos = Producto.objects.all()
     return render(request, 'ver_producto.html', {'productos': productos})
 
+def editar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)  
+    formulario = FormularioEdicionProducto(instance=producto)  
+
+    if request.method == 'POST':
+        formulario = FormularioEdicionProducto(request.POST, request.FILES, instance=producto)
+
+        if formulario.is_valid():
+            formulario.save()  
+            return redirect('ver_pedido')  
+
+    return render(request, 'editar_producto.html', {'form': formulario, 'producto': producto})
+
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
     producto.delete()
-    return redirect('/ver_pedido')  # Reemplaza con el nombre de tu vista
+    return redirect('/ver_pedido')  
 
 
 
